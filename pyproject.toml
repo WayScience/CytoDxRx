@@ -1,0 +1,87 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [ "setuptools>=77", "setuptools-scm>=8" ]
+
+[project]
+name = "cytodxrx"
+description = "Diagnose and correct technical artifacts in image-based profiles."
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = [ "LICENSE" ]
+authors = [
+  { name = "Gregory P. Way" },
+]
+requires-python = ">=3.11,<3.14"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = [ "version" ]
+dependencies = [
+  # used for numerical work
+  "numpy>=1.26",
+  # used for well-level profile and platemap tables
+  "pandas>=2.2.2,<3",
+]
+
+[dependency-groups]
+dev = [
+  "pre-commit>=3,<5",
+  # provides testing capabilities for project
+  "pytest>=8.2,<10",
+  # used for linting and formatting
+  "ruff>=0.8",
+]
+docs = [
+  # used for building the docsite
+  "mkdocs>=1.6,<2",
+  # used for rendering API pages from docstrings
+  "mkdocstrings[python]>=0.26,<2",
+  # used for theming the docsite
+  "mkdocs-material>=9.5,<10",
+]
+
+[tool.setuptools]
+packages.find.include = [ "cytodxrx*" ]
+
+# set dynamic versioning capabilities for project based on git
+[tool.setuptools_scm]
+fallback_version = "0.0.0"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+lint.select = [
+  # flake8-builtins
+  "A",
+  # flake8-annotations
+  "ANN",
+  # flake8-comprehensions
+  "C4",
+  # mccabe
+  "C90",
+  # pydocstyle (numpy docstring convention, see below)
+  "D",
+  # pycodestyle
+  "E",
+  # pyflakes
+  "F",
+  # isort
+  "I",
+  # pylint
+  "PL",
+  # ruff
+  "RUF",
+  # flake8-simplify
+  "SIM",
+  "W",
+]
+# Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
+lint.per-file-ignores."__init__.py" = [ "E402", "F401" ]
+lint.per-file-ignores."tests/*" = [ "ANN201", "ANN202", "D", "PLR0913", "PLR2004" ]
+lint.pydocstyle.convention = "numpy"
+
+[tool.pytest]
+ini_options.testpaths = [ "tests" ]
