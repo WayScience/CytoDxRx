@@ -35,12 +35,14 @@ dev = [
   "ruff>=0.8",
 ]
 docs = [
-  # used for building the docsite
-  "mkdocs>=1.6,<2",
   # used for theming the docsite
-  "mkdocs-material>=9.5,<10",
-  # used for rendering API pages from docstrings
-  "mkdocstrings[python]>=0.26,<2",
+  "furo>=2024.8,<2027",
+  # used for rendering markdown through sphinx
+  "myst-parser>=3,<6",
+  # used for building the docsite and its API pages from docstrings
+  "sphinx>=7.4,<9",
+  # used for copy buttons on code blocks
+  "sphinx-copybutton>=0.5,<1",
 ]
 
 [tool.setuptools]
@@ -80,6 +82,7 @@ lint.select = [
 ]
 # Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
 lint.per-file-ignores."__init__.py" = [ "E402", "F401" ]
+lint.per-file-ignores."docs/*" = [ "D", "E402" ]
 lint.per-file-ignores."tests/*" = [ "ANN201", "ANN202", "D", "PLR0913", "PLR2004" ]
 lint.pydocstyle.convention = "numpy"
 

@@ -14,7 +14,8 @@ htmlcov/
 .venv/
 
 # documentation build
-site/
+docs/_build/
+docs/_autosummary/
 
 # editors and OS
 .DS_Store
