@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+# draft updates run one at a time, so the last one reflects the latest push
+concurrency:
+  group: release-drafter-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   draft_release:
     permissions:

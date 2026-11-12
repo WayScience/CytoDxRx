@@ -2,6 +2,9 @@
 # used for running tests
 name: tests
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -10,9 +13,6 @@ on:
 
 jobs:
   pre_commit_checks:
-    # we avoid running duplicative
-    # pre-commit checks for dependabot PRs
-    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -24,16 +24,16 @@ jobs:
       - name: Python setup
         uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.14"
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v10.3.2
       - name: Install environment
-        run: uv sync
+        run: uv sync --locked
       - uses: pre-commit/action@v3.0.1
   run_tests:
     strategy:
       matrix:
-        python_version: ["3.11", "3.12", "3.13"]
+        python_version: ["3.11", "3.12", "3.13", "3.14"]
         os: [ubuntu-24.04, macos-14]
     runs-on: ${{ matrix.os }}
     steps:
@@ -51,4 +51,4 @@ jobs:
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v10.3.2
       - name: Run pytest
-        run: uv run --frozen pytest
+        run: uv run --locked pytest
