@@ -7,6 +7,8 @@
 
 scope
 inputs
+artifacts
+invariants
 contributing
 glossary
 reference
