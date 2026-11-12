@@ -24,7 +24,7 @@ dependencies = [
   # used for numerical work
   "numpy>=1.26",
   # used for well-level profile and platemap tables
-  "pandas>=2.2.2,<3",
+  "pandas>=2.2.2,<4",
 ]
 
 [dependency-groups]
@@ -41,7 +41,7 @@ docs = [
   # used for rendering markdown through sphinx
   "myst-parser>=3,<6",
   # used for building the docsite and its API pages from docstrings
-  "sphinx>=7.4,<9",
+  "sphinx>=7.4,<10",
   # used for copy buttons on code blocks
   "sphinx-copybutton>=0.5,<1",
 ]
