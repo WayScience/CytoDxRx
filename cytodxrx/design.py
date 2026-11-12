@@ -304,6 +304,47 @@ def build_design(
     return pd.concat(parts, ignore_index=True)[list(DESIGN_COLUMNS)]
 
 
+_SYMBOLS = {
+    Role.COMPOUND.value: "c",
+    Role.CONTROL.value: "d",
+    Role.EMPTY.value: ".",
+}
+
+
+def render_roles(design: pd.DataFrame, plate: str) -> str:
+    """Draw the roles of the wells of one plate as text.
+
+    Parameters
+    ----------
+    design : pandas.DataFrame
+        The design table; see `build_design`.
+    plate : str
+        The plate to draw.
+
+    Returns
+    -------
+    str
+        One line per plate row and one cell per column: ``c`` for a compound
+        well, ``d`` for a control well and ``.`` for an empty well.
+
+    Raises
+    ------
+    DesignError
+        If the plate is not in the design.
+    """
+    wells = design[design[PLATE] == plate]
+    if wells.empty:
+        msg = f"plate {plate!r} is not in the design"
+        raise DesignError(msg)
+    n_columns = int(wells[COLUMN].max())
+    lines = ["   " + " ".join(f"{column:>2}" for column in range(1, n_columns + 1))]
+    for row, row_wells in wells.groupby(ROW, sort=False):
+        roles = dict(zip(row_wells[COLUMN], row_wells[ROLE], strict=True))
+        cells = " ".join(f"{_SYMBOLS[roles[c]]:>2}" for c in range(1, n_columns + 1))
+        lines.append(f"{row:<2} {cells}")
+    return "\n".join(lines) + "\n"
+
+
 def _find_platemap(directory: Path, name: str) -> Path:
     """Return the file of a platemap, with or without its ``.csv`` extension."""
     for candidate in (directory / name, directory / f"{name}.csv"):

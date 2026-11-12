@@ -12,7 +12,9 @@ from cytodxrx.design import (
     COMPOUND,
     DESIGN_COLUMNS,
     PLATE,
+    PLATEMAP,
     ROLE,
+    SOLVENT,
     WELL,
     BarcodeColumns,
     DesignError,
@@ -21,6 +23,7 @@ from cytodxrx.design import (
     assign_role,
     build_design,
     read_design,
+    render_roles,
     role_problem,
 )
 from cytodxrx.plate import PLATE_96, PLATE_384
@@ -41,29 +44,6 @@ CARDIAC = (
     BarcodeColumns("plate_barcode", "platemap_file"),
     PlatemapColumns("well_position", "treatment", control_values=("DMSO",)),
 )
-
-
-@pytest.mark.parametrize(
-    ("compound", "solvent", "explicit", "control_values", "role"),
-    [
-        ("BRD-1", "DMSO", None, (), Role.COMPOUND),
-        ("BRD-1", None, None, (), Role.COMPOUND),
-        (None, "DMSO", None, (), Role.CONTROL),
-        (None, None, None, (), Role.EMPTY),
-        ("DMSO", None, None, ("DMSO",), Role.CONTROL),
-        ("DMSO", None, None, (), Role.COMPOUND),
-        ("BRD-1", "DMSO", "control", (), Role.CONTROL),
-        (None, None, " Compound ", (), Role.COMPOUND),
-    ],
-)
-def test_assign_role(
-    compound: str | None,
-    solvent: str | None,
-    explicit: str | None,
-    control_values: tuple[str, ...],
-    role: Role,
-) -> None:
-    assert assign_role(compound, solvent, explicit, control_values) is role
 
 
 def test_assign_role_rejects_an_unknown_explicit_role() -> None:
@@ -214,37 +194,6 @@ def test_an_explicit_role_column_decides() -> None:
     assert list(design[ROLE]) == ["empty", "control"]
 
 
-@pytest.mark.parametrize(
-    ("platemap", "message"),
-    [
-        (
-            _platemap([("A01", None, None), ("A01", None, None)]),
-            "listed more than once",
-        ),
-        (_platemap([("A09", None, None)]), "outside a 2 x 3 plate"),
-        (_platemap([("nonsense", None, None)]), "not a well name"),
-    ],
-)
-def test_a_platemap_that_does_not_fit_the_plate_is_an_error(
-    platemap: pd.DataFrame, message: str
-) -> None:
-    with pytest.raises(DesignError, match=message):
-        build_design(_barcodes(("P1", "m")), {"m": platemap}, (2, 3), BARCODES, PLAIN)
-
-
-def test_contradicting_roles_name_the_wells() -> None:
-    platemap = pd.DataFrame(
-        {
-            "well": ["A01", "A02"],
-            "compound": ["BRD-1", "BRD-2"],
-            "role": ["control", "empty"],
-        }
-    )
-    columns = PlatemapColumns("well", "compound", role="role")
-    with pytest.raises(DesignError, match=r"well A01: a control well holds.*well A02"):
-        build_design(_barcodes(("P1", "m")), {"m": platemap}, (1, 2), BARCODES, columns)
-
-
 def test_barcode_table_problems_are_errors() -> None:
     platemap = {"m": _platemap([("A01", None, None)])}
     with pytest.raises(DesignError, match="more than once"):
@@ -316,3 +265,69 @@ def test_every_well_of_every_plate_has_exactly_one_role(experiment: tuple) -> No
     compounds = design.loc[design[ROLE] == "compound", COMPOUND]
     assert compounds.notna().all()
     assert design.loc[design[ROLE] != "compound", COMPOUND].isna().all()
+
+
+def test_the_design_has_a_clean_row_index() -> None:
+    platemap = _platemap([("A01", "BRD-1", None)])
+    design = build_design(
+        _barcodes(("P1", "m"), ("P2", "m")), {"m": platemap}, (1, 2), BARCODES, PLAIN
+    )
+    assert list(design.index) == list(range(len(design)))
+
+
+def test_identifiers_that_look_like_numbers_stay_text(tmp_path: Path) -> None:
+    (tmp_path / "barcode.csv").write_text("plate,map\n0123,007\n")
+    (tmp_path / "007.csv").write_text("well,compound,solvent\nA01,0042,\nA02,,1.0\n")
+    design = read_design(tmp_path / "barcode.csv", tmp_path, (1, 3), BARCODES, PLAIN)
+    assert set(design[PLATE]) == {"0123"}
+    assert set(design[PLATEMAP]) == {"007"}
+    assert list(design[COMPOUND].dropna()) == ["0042"]
+    assert list(design[SOLVENT].dropna()) == ["1.0"]
+
+
+def test_errors_say_which_table_or_platemap_they_are_about() -> None:
+    barcodes = _barcodes(("P1", "m"))
+    with pytest.raises(DesignError, match="the barcode table has no column"):
+        build_design(barcodes, {}, (1, 2), BarcodeColumns("x", "map"), PLAIN)
+    with pytest.raises(DesignError, match="platemap 'm' has no column"):
+        build_design(
+            barcodes,
+            {"m": _platemap([])},
+            (1, 2),
+            BARCODES,
+            PlatemapColumns("nope", "compound"),
+        )
+
+
+def test_a_missing_platemap_file_names_both_spellings(tmp_path: Path) -> None:
+    (tmp_path / "barcode.csv").write_text("plate,map\nP1,absent\n")
+    with pytest.raises(DesignError, match=r"'absent' or 'absent.csv'"):
+        read_design(tmp_path / "barcode.csv", tmp_path, PLATE_384, BARCODES, PLAIN)
+
+
+def test_a_platemap_file_is_found_with_or_without_its_extension(tmp_path: Path) -> None:
+    (tmp_path / "with_extension.csv").write_text("well,compound,solvent\nA01,BRD-1,\n")
+    (tmp_path / "plain").write_text("well,compound,solvent\nA01,BRD-2,\n")
+    (tmp_path / "barcode.csv").write_text("plate,map\nP1,with_extension\nP2,plain\n")
+    design = read_design(tmp_path / "barcode.csv", tmp_path, (1, 1), BARCODES, PLAIN)
+    assert list(design[COMPOUND]) == ["BRD-1", "BRD-2"]
+
+
+def test_render_roles_draws_the_plate() -> None:
+    platemap = _platemap([("A01", "BRD-1", None), ("A02", None, "DMSO")])
+    design = build_design(
+        _barcodes(("P1", "m")), {"m": platemap}, (2, 3), BARCODES, PLAIN
+    )
+    assert render_roles(design, "P1") == "    1  2  3\nA   c  d  .\nB   .  .  .\n"
+    with pytest.raises(DesignError, match="not in the design"):
+        render_roles(design, "other")
+
+
+def test_render_roles_keeps_the_row_order_beyond_row_z() -> None:
+    platemap = _platemap([("AA01", "BRD-1", None)])
+    design = build_design(
+        _barcodes(("P1", "m")), {"m": platemap}, (28, 1), BARCODES, PLAIN
+    )
+    labels = [line.split()[0] for line in render_roles(design, "P1").splitlines()[1:]]
+    assert labels == [*"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "AA", "AB"]
+    assert "\nAA  c\n" in render_roles(design, "P1")

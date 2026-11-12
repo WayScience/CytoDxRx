@@ -85,3 +85,17 @@ def test_check_profiles_names_the_problem(
 ) -> None:
     with pytest.raises(ExperimentError, match=message):
         experiment.check_profiles(change(_profiles(experiment)))
+
+
+def test_long_lists_of_problems_are_cut_off(experiment: Experiment) -> None:
+    bad_wells = _profiles(experiment).iloc[:8].copy()
+    bad_wells[WELL] = [f"Z{i}" for i in range(8)]
+    with pytest.raises(ExperimentError) as error:
+        experiment.check_profiles(bad_wells)
+    assert "Z4" in str(error.value)
+    assert "Z5" not in str(error.value)
+
+    repeated = pd.concat([_profiles(experiment).iloc[:7]] * 2)
+    with pytest.raises(ExperimentError) as error:
+        experiment.check_profiles(repeated)
+    assert str(error.value).count("Metadata_Well") == 5

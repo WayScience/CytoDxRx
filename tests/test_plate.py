@@ -86,11 +86,26 @@ def test_name_and_parse_are_inverses(
     assert format_.parse(format_.name(row, column)) == (row, column)
 
 
-def test_name_rejects_wells_outside_the_plate() -> None:
-    with pytest.raises(WellNameError):
-        PLATE_96.name(8, 0)
-    with pytest.raises(WellNameError):
-        PLATE_96.name(0, -1)
+@pytest.mark.parametrize("format_", [PLATE_96, PLATE_384, PLATE_1536])
+def test_name_accepts_the_last_well_and_rejects_the_ones_just_past_it(
+    format_: PlateFormat,
+) -> None:
+    last_row, last_column = format_.n_rows - 1, format_.n_columns - 1
+    assert format_.parse(format_.name(last_row, last_column)) == (last_row, last_column)
+    for row, column in [
+        (format_.n_rows, 0),
+        (0, format_.n_columns),
+        (-1, 0),
+        (0, -1),
+        (format_.n_rows, format_.n_columns),
+    ]:
+        with pytest.raises(WellNameError, match="outside"):
+            format_.name(row, column)
+
+
+def test_the_96_well_names_match_an_independent_list() -> None:
+    expected = [f"{row}{column:02d}" for row in "ABCDEFGH" for column in range(1, 13)]
+    assert PLATE_96.wells() == expected
 
 
 def test_a_plate_needs_rows_and_columns() -> None:
