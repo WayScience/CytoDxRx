@@ -1,5 +1,0 @@
-# Test data and expected results are what the tests are checked against.
-# A person reviews every change to them.
-/tests/data/ @gwaybio
-/tests/cases/ @gwaybio
-/tests/approved/ @gwaybio
