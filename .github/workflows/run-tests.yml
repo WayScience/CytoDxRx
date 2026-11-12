@@ -1,0 +1,54 @@
+---
+# used for running tests
+name: tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pre_commit_checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # fetch tags for versioning details
+          fetch-depth: 0
+      - name: Fetch tags
+        run: git fetch --all --tags
+      - name: Python setup
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v10.3.2
+      - name: Install environment
+        run: uv sync --locked
+      - uses: pre-commit/action@v3.0.1
+  run_tests:
+    strategy:
+      matrix:
+        python_version: ["3.11", "3.12", "3.13", "3.14"]
+        os: [ubuntu-24.04, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # fetch tags for versioning details
+          fetch-depth: 0
+      - name: Fetch tags
+        run: git fetch --all --tags
+      - name: Python setup
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v10.3.2
+      - name: Run pytest
+        run: uv run --locked pytest
