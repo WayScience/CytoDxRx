@@ -8,6 +8,7 @@
 scope
 inputs
 artifacts
+plan-file
 invariants
 contributing
 glossary
