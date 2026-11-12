@@ -90,3 +90,7 @@ lint.pydocstyle.convention = "numpy"
 
 [tool.pytest]
 ini_options.testpaths = [ "tests" ]
+
+[tool.mutmut]
+source_paths = [ "cytodxrx/" ]
+pytest_add_cli_args_test_selection = [ "tests/" ]
