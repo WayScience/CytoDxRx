@@ -21,7 +21,7 @@ Closes #<GitHub issue number goes here>
 
 Please ensure that all boxes are checked before indicating that a pull request is ready for review.
 
-- [ ] I have read the [CONTRIBUTING.md](CONTRIBUTING.md) guidelines.
+- [ ] I have read the [CONTRIBUTING.md](https://github.com/WayScience/CytoDxRx/blob/main/CONTRIBUTING.md) guidelines.
 - [ ] My code follows the style guidelines of this project.
 - [ ] I have performed a self-review of my own code.
 - [ ] I have added tests that cover the change.
