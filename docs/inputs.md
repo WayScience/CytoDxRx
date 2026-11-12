@@ -49,8 +49,11 @@ Every well has exactly one role:
 | `empty`    | the well has neither                       |
 
 If the platemap has a role column, it decides.
-Otherwise the role follows from the compound and solvent columns.
-A well that a platemap does not list is `empty`.
+Otherwise the role follows from the compound and solvent columns:
+a well with a compound is a `compound` well, unless the compound column holds a control value such as `DMSO`, which marks a `control`;
+a well with no compound is a `control` if it has a solvent and `empty` if it has not.
+Some platemaps list the vehicle as a treatment and have no solvent column, so the control values are a parameter.
+A well that a platemap does not list is `empty`, so a platemap of the interior wells of a plate is fine.
 Platemaps that contradict themselves, for example a control well with a compound, are an error that names the wells.
 
 ## Outputs
