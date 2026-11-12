@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-Guidance for Claude Code (and other coding agents) working in this repository.
+Guidance for coding agents working in this repository.
 
 ## What this is
 
@@ -9,7 +9,7 @@ confluence effects) in plate-based image-based profiles. It takes per-plate well
 profiles and platemaps, decides which artifacts are present and separable from biology,
 fits corrections, writes a plan for a person to approve, and applies the approved
 corrections. It is intended for the cytomining community and follows pycytominer
-conventions. It is pre-alpha; see `docs/index.md` for the intended workflow.
+conventions.
 
 ## Commands
 
@@ -39,26 +39,16 @@ uv run --group docs sphinx-build -W -b html docs docs/_build/html   # docs, warn
   from biology and which assumption an estimate relies on, instead of guessing.
 - Numerical decisions are rule-based, calibrated and recorded. Do not put a language
   model in the decision path.
-- Type hints on public functions. No new dependency without discussion.
+- No new dependency without discussion.
 - No data in the repository beyond small test fixtures. Never commit large files.
 
 ## Working rules
 
 - Keep changes small and focused; one pull request does one thing.
+- Make all technical documentation brief, simple, and true.
 - Every change has tests, and documentation if it changes behavior.
+- Tests prefer real over mocked data.
 - Ask before changing the scope, the input contract or a public interface.
+- All production code must include accurate type hints and docstrings with complete descriptions of parameters and return values.
 
-## Glossary
-
-- **artifact**: a technical effect on well profiles that is not biology.
-- **position effect**: an artifact that is a function of well position. **Tilt** is one
-  type (a smooth additive row-plus-column map with a per-layout amplitude); others
-  include control-column offsets, parity patterns and edge effects.
-- **covariate effect**: an artifact driven by a measured covariate, such as cell count
-  or confluence.
-- **platemap**: the file that says what is in each well; a barcode-to-platemap table
-  links plates to platemaps. A **layout** is a set of plates sharing the same arrangement.
-- **identifiability grade**: whether an artifact can be separated from biology in a
-  design: by design, under an assumption, or not at all.
-- **plan file**: the proposed corrections with their evidence; a person approves entries
-  before anything is applied.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and checks, and the glossary in `docs/glossary.md` for the terms used here.
