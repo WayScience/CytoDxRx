@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         python_version: ["3.11", "3.12", "3.13", "3.14"]
-        os: [ubuntu-24.04, macos-14]
+        os: [ubuntu-24.04, macos-26]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
