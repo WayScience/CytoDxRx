@@ -1,7 +1,3 @@
 # Every change is reviewed by a code owner.
-# Test data and expected results are what the tests are checked against,
-# so a person must review every change to them.
+# This includes the test data and the expected results, which the tests are checked against.
 * @gwaybio
-/tests/data/ @gwaybio
-/tests/cases/ @gwaybio
-/tests/approved/ @gwaybio
