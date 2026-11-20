@@ -1,0 +1,10 @@
+case,compound,solvent,explicit,control_values,role
+a compound with a solvent,BRD-1,DMSO,,,compound
+a compound without a solvent,BRD-1,,,,compound
+no compound but a solvent,,DMSO,,,control
+no compound and no solvent,,,,,empty
+the vehicle is listed as a treatment,DMSO,,,DMSO,control
+the vehicle is not declared as a control value,DMSO,,,,compound
+one of two declared control values,Vehicle,,,DMSO|Vehicle,control
+an explicit role beats the columns,BRD-1,DMSO,control,,control
+an explicit role ignores case and spaces,,,  Compound ,,compound
