@@ -18,9 +18,9 @@ They are checked in one of three ways, and the docs say which:
 | identifiability | a grade is always one of the three; turning empty wells into control wells, with every compound well unchanged, never lowers a grade                                           |
 | correction      | a correction is a constant per well and feature, so the median of the corrected cells of a well equals the corrected well profile                                              |
 | correction      | the weight used to shrink a layout's amplitude toward the shared value is between 0 and 1, so the shrunk amplitude lies between the layout's own estimate and the shared value |
-| ordering        | the order in which artifacts are fitted is fixed and respects their dependencies                                                                                               |
-| plan            | `apply` uses only approved entries, never a proposed or rejected one                                                                                                           |
-| plan            | reading a plan file and writing it again returns the same plan                                                                                                                 |
+| ordering        | the order in which technical artifacts are fitted is fixed and respects their dependencies                                                                                     |
+| correction plan | `apply` uses only approved entries, never a proposed or rejected one                                                                                                           |
+| correction plan | reading a correction plan file and writing it again returns the same correction plan                                                                                           |
 | tables          | a correction table is keyed on plate and well, and applying it to a table it does not cover is an error                                                                        |
 
 The identifiability row is a claim about grading rules that do not exist yet.

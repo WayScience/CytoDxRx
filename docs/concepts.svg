@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810 300" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13">
+  <title id="t">How the CytoDxRx steps connect</title>
+  <desc id="d">Four steps run left to right: inspect, discover, review and apply. Above each step is what it reads and below it is what it produces.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <g stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#a)">
+    <path d="M105 94 V124"/><path d="M305 94 V124"/><path d="M505 94 V124"/><path d="M705 94 V124"/>
+    <path d="M105 176 V206"/><path d="M305 176 V206"/><path d="M505 176 V206"/><path d="M705 176 V206"/>
+    <path d="M190 150 H220"/><path d="M390 150 H420"/><path d="M590 150 H620"/>
+  </g>
+  <g fill="#eef2f7" stroke="#8a94a6" stroke-width="1.2">
+    <rect x="20" y="20" width="170" height="74" rx="6"/><rect x="220" y="20" width="170" height="74" rx="6"/>
+    <rect x="420" y="20" width="170" height="74" rx="6"/><rect x="620" y="20" width="170" height="74" rx="6"/>
+    <rect x="20" y="206" width="170" height="74" rx="6"/><rect x="220" y="206" width="170" height="74" rx="6"/>
+    <rect x="420" y="206" width="170" height="74" rx="6"/><rect x="620" y="206" width="170" height="74" rx="6"/>
+  </g>
+  <g stroke-width="1.5">
+    <rect x="20" y="124" width="170" height="52" rx="26" fill="#d6e4f5" stroke="#5b7aa8"/>
+    <rect x="220" y="124" width="170" height="52" rx="26" fill="#d6e4f5" stroke="#5b7aa8"/>
+    <rect x="420" y="124" width="170" height="52" rx="26" fill="#fbe9c8" stroke="#b88a2e"/>
+    <rect x="620" y="124" width="170" height="52" rx="26" fill="#d6e4f5" stroke="#5b7aa8"/>
+  </g>
+  <g fill="#1f2933" text-anchor="middle">
+    <g font-weight="600" font-size="15">
+      <text x="105" y="155">inspect</text><text x="305" y="155">discover</text>
+      <text x="505" y="155">review (a person)</text><text x="705" y="155">apply</text>
+    </g>
+    <text x="105" y="48">Platemaps,<tspan x="105" dy="18">barcode-to-platemap</tspan><tspan x="105" dy="18">table, plate format</tspan></text>
+    <text x="305" y="48">Well-level profiles,<tspan x="305" dy="18">design table,</tspan><tspan x="305" dy="18">optional cell counts</tspan></text>
+    <text x="505" y="48">Report and correction<tspan x="505" dy="18">plan file, every entry</tspan><tspan x="505" dy="18">proposed</tspan></text>
+    <text x="705" y="48">Approved entries,<tspan x="705" dy="18">well-level or</tspan><tspan x="705" dy="18">single-cell profiles</tspan></text>
+    <text x="105" y="234">Design table and a grade<tspan x="105" dy="18">for each technical</tspan><tspan x="105" dy="18">artifact</tspan></text>
+    <text x="305" y="243">Correction plan file<tspan x="305" dy="18">and report</tspan></text>
+    <text x="505" y="243">Entries approved<tspan x="505" dy="18">or rejected</tspan></text>
+    <text x="705" y="243">Correction tables and<tspan x="705" dy="18">corrected profiles</tspan></text>
+  </g>
+</svg>

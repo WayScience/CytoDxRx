@@ -7,8 +7,8 @@ CytoDxRx requires these inputs rather than processing raw data itself.
 
 ### Well-level profiles
 
-One row per well per plate, un-normalized, after cell quality control.
-Parquet or CSV, one file per plate or one pooled file.
+One table of well-level profiles, with one row per well per plate, un-normalized, after cell quality control.
+The table can be split into one file per plate or pooled into one file, as Parquet or CSV.
 
 | Column             | Meaning                                               |
 | ------------------ | ----------------------------------------------------- |
@@ -63,5 +63,5 @@ Platemaps that contradict themselves, for example a control well with a compound
 
 - **Correction tables**, keyed on plate and well: a shift per well and feature, and a scale per plate.
 - **Corrected profiles**, in the original units.
-- **The plan file**, which records what was found and what a person approved.
-- **A report** for the person who reviews the plan.
+- **The correction plan file**, which records what was found and what a person approved.
+- **A report** for the person who reviews the correction plan.

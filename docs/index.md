@@ -6,6 +6,7 @@
 :maxdepth: 2
 
 scope
+concepts
 inputs
 artifacts
 plan-file
