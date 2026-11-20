@@ -6,8 +6,8 @@ Guidance for coding agents working in this repository.
 
 CytoDxRx diagnoses and corrects technical artifacts (position effects, cell-density or
 confluence effects) in plate-based image-based profiles. It takes per-plate well-level
-profiles and platemaps, decides which artifacts are present and separable from biology,
-fits corrections, writes a plan for a person to approve, and applies the approved
+profiles and platemaps, decides which technical artifacts are present and separable from biology,
+fits corrections, writes a correction plan for a person to approve, and applies the approved
 corrections. It is intended for the cytomining community and follows pycytominer
 conventions.
 
@@ -35,7 +35,7 @@ uv run --group docs sphinx-build -W -b html docs docs/_build/html   # docs, warn
   `fit` and `transform`, and they serialize to tables keyed on plate and well.
 - A correction must be expressible as a constant per well and feature (plus a scale
   per plate), so it applies identically to a well's median and to every cell in it.
-- Estimability depends on the plate design. Report when an artifact cannot be separated
+- Estimability depends on the plate design. Report when a technical artifact cannot be separated
   from biology and which assumption an estimate relies on, instead of guessing.
 - Numerical decisions are rule-based, calibrated and recorded. Do not put a language
   model in the decision path.
