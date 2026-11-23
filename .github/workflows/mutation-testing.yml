@@ -35,13 +35,13 @@ jobs:
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v10.3.2
       - name: Run mutation testing
-        run: uv run --locked --with mutmut mutmut run
+        run: uv run --locked mutmut run
       - name: Report the faults that survived
         if: always()
         run: |
           {
             echo "## Faults that survived"
             echo '```'
-            uv run --locked --with mutmut mutmut results
+            uv run --locked mutmut results
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"

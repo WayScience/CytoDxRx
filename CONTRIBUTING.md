@@ -32,7 +32,7 @@ uv run --group docs sphinx-build -W -b html docs docs/_build/html
 - Expected values in tests come from a person or from an independent calculation, never from the output of the code under test.
   Cases that a scientist can read live in data files: tables in `tests/cases` and drawings of real plates in `tests/approved`.
   A person reviews every change to `tests/data`, `tests/cases` and `tests/approved`.
-- Mutation testing (`uv run --with mutmut mutmut run`) injects small faults into the code and checks that a test fails.
+- Mutation testing (`uv run mutmut run`) injects small faults into the code and checks that a test fails.
   A fault that survives means a missing test.
 - Make all technical documentation brief, simple, and true.
 - Production code has accurate type hints and numpy-style docstrings that describe every parameter and return value.
