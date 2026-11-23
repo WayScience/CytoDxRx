@@ -8,7 +8,7 @@ In plate-based image-based profiling, a well's profile reflects where the well s
 Row and column gradients, differences between control columns, alternating-row patterns and cell-density effects are examples.
 Left uncorrected, these effects can be mistaken for biology.
 They can also inflate replicate agreement when replicates share a well position.
-Which artifacts are present in an experiment, and which can be separated from biology at all, depends on the plate design.
+Which technical artifacts are present in an experiment, and which can be separated from biology at all, depends on the plate design.
 
 ## What correction gives you
 
@@ -19,9 +19,9 @@ A report that says what was found, what was corrected and what could not be sepa
 
 CytoDxRx follows a human-in-the-loop workflow:
 
-1. **inspect**: read the platemaps and report which artifacts the design can separate from biology, and under which assumptions.
-1. **discover**: test for each artifact on the well-level profiles, fit corrections for the ones found, and write a plan file and a report.
-1. **review**: a person reads the report and approves the plan.
+1. **inspect**: read the platemaps and report which technical artifacts the design can separate from biology, and under which assumptions.
+1. **discover**: test for each technical artifact on the well-level profiles, fit corrections for the ones found, and write a correction plan file and a report.
+1. **review**: a person reads the report and approves the correction plan.
 1. **apply**: apply the approved corrections to well-level or single-cell profiles.
 
 Detection and fitting use well-level profiles.
