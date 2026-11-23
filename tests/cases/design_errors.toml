@@ -1,0 +1,60 @@
+# Platemaps that cannot be turned into a design, each with the error it must give.
+# `rows` are [well, compound, solvent, role]; an empty string means missing.
+# `shape` is [rows, columns] of the plate. `error` is a regular expression the
+# message must match, and `not_in` (optional) text the message must not contain.
+
+[[case]]
+name = "a well listed twice"
+shape = [2, 3]
+rows = [["A01", "", "", ""], ["A01", "", "", ""]]
+error = "platemap 'm': well A01 is listed more than once"
+
+[[case]]
+name = "a well outside the plate"
+shape = [2, 3]
+rows = [["A09", "", "", ""]]
+error = "outside a 2 x 3 plate"
+
+[[case]]
+name = "a well that is not a well name"
+shape = [2, 3]
+rows = [["nonsense", "", "", ""]]
+error = "not a well name"
+
+[[case]]
+name = "every problem is reported, not just the first"
+shape = [2, 3]
+rows = [["A01", "", "", ""], ["A01", "", "", ""], ["A09", "", "", ""]]
+error = "listed more than once.*outside a 2 x 3 plate"
+
+[[case]]
+name = "a control well that holds a compound"
+shape = [1, 2]
+rows = [["A01", "BRD-1", "", "control"], ["A02", "BRD-2", "", "empty"]]
+error = "well A01: a control well holds.*well A02: an empty well holds"
+
+[[case]]
+name = "an unknown role"
+shape = [1, 2]
+rows = [["A01", "", "", "blank"]]
+error = "well A01: unknown role 'blank'"
+
+[[case]]
+name = "five problems are all shown, with no count of more"
+shape = [1, 2]
+rows = [["B01", "", "", ""], ["B02", "", "", ""], ["B03", "", "", ""], ["B04", "", "", ""], ["B05", "", "", ""]]
+error = "'B05'"
+not_in = "more)"
+
+[[case]]
+name = "six problems show five and count the rest"
+shape = [1, 2]
+rows = [["B01", "", "", ""], ["B02", "", "", ""], ["B03", "", "", ""], ["B04", "", "", ""], ["B05", "", "", ""], ["B06", "", "", ""]]
+error = "'B05'.*\\(and 1 more\\)"
+not_in = "'B06'"
+
+[[case]]
+name = "every unknown role is reported"
+shape = [1, 2]
+rows = [["A01", "", "", "blank"], ["A02", "", "", "other"]]
+error = "unknown role 'blank'.*unknown role 'other'"

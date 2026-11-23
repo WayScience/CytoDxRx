@@ -25,5 +25,6 @@ Please ensure that all boxes are checked before indicating that a pull request i
 - [ ] My code follows the style guidelines of this project.
 - [ ] I have performed a self-review of my own code.
 - [ ] I have added tests that cover the change.
+- [ ] If I changed an expected value in `tests/`, I worked it out independently and did not copy it from the output of the code.
 - [ ] I have added or updated documentation (docstrings and, if behavior changed, the docs pages).
 - [ ] The change is small and focused on one thing.
